@@ -9,6 +9,23 @@ import CryptoKit
 import Foundation
 
 extension URL {
+    /// Creates a URL for the provided default directory path, or `nil` if the path is empty or is no longer an existing directory.
+    ///
+    /// - Parameters:
+    ///   - defaultDirectory: The default directory path stored in user defaults.
+    init?(defaultDirectory: String) {
+        var isDirectory: ObjCBool = false
+
+        guard
+            !defaultDirectory.isEmpty,
+            FileManager.default.fileExists(atPath: defaultDirectory, isDirectory: &isDirectory),
+            isDirectory.boolValue else {
+            return nil
+        }
+
+        self.init(fileURLWithPath: defaultDirectory, isDirectory: true)
+    }
+
     /// Provides the size of the file at the URL, in bytes.
     ///
     /// - Throws: An `Error` if the file size is unable to be determined.

@@ -11,6 +11,8 @@ import SwiftUI
 struct ListRowFirmware: View {
     @AppStorage("firmwareFilename")
     private var firmwareFilename: String = .firmwareFilenameTemplate
+    @AppStorage("defaultDirectory")
+    private var defaultDirectory: String = ""
     @AppStorage("retries")
     private var retries: Int = 10
     @AppStorage("retryDelay")
@@ -132,6 +134,10 @@ struct ListRowFirmware: View {
         savePanel.canCreateDirectories = true
         savePanel.canSelectHiddenExtension = true
         savePanel.isExtensionHidden = false
+
+        if let url: URL = URL(defaultDirectory: defaultDirectory) {
+            savePanel.directoryURL = url
+        }
 
         _ = Task {
             let response: NSApplication.ModalResponse = savePanel.runModal()

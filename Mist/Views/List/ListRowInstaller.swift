@@ -15,6 +15,8 @@ struct ListRowInstaller: View {
     private var cacheDownloads: Bool = false
     @AppStorage("cacheDirectory")
     private var cacheDirectory: String = .cacheDirectory
+    @AppStorage("defaultDirectory")
+    private var defaultDirectory: String = ""
     @AppStorage("applicationFilename")
     private var applicationFilename: String = .applicationFilenameTemplate
     @AppStorage("diskImageFilename")
@@ -170,6 +172,10 @@ struct ListRowInstaller: View {
         openPanel.prompt = "Save"
         openPanel.accessoryView = NSHostingView(rootView: InstallerExportView(installer: installer, exports: $exports))
         openPanel.isAccessoryViewDisclosed = true
+
+        if let url: URL = URL(defaultDirectory: defaultDirectory) {
+            openPanel.directoryURL = url
+        }
 
         _ = Task {
             let response: NSApplication.ModalResponse = openPanel.runModal()

@@ -18,6 +18,8 @@ struct SettingsGeneralView: View {
     private var enableAutomaticChecks: Bool = true
     @AppStorage("SUScheduledCheckInterval")
     private var scheduledCheckInterval: Int = 86_400
+    @AppStorage("defaultDirectory")
+    private var defaultDirectory: String = ""
     @AppStorage("appIcon")
     private var appIcon: AppIcon = .default
     @ObservedObject var sparkleUpdater: SparkleUpdater
@@ -43,6 +45,8 @@ struct SettingsGeneralView: View {
             SettingsGeneralRetryView(title: "Retry attempts:", value: $retries, minimum: retriesMinimum, maximum: retriesMaximum, default: retriesDefault, description: retriesDescription)
             SettingsGeneralRetryView(title: "Retry delay:", value: $retryDelay, minimum: retryDelayMinimum, maximum: retryDelayMaximum, default: retryDelayDefault, description: retryDelayDescription)
             PaddedDivider()
+            DefaultDirectoryView(title: "Default download directory:", directory: $defaultDirectory)
+            PaddedDivider()
             SettingsGeneralUpdatesView(sparkleUpdater: sparkleUpdater, enable: $enableAutomaticChecks, interval: $scheduledCheckInterval, width: width)
             PaddedDivider()
             if #unavailable(macOS 26) {
@@ -60,6 +64,7 @@ struct SettingsGeneralView: View {
         enableNotifications = enableNotificationsDefault
         retries = retriesDefault
         retryDelay = retryDelayDefault
+        defaultDirectory = ""
         enableAutomaticChecks = enableAutomaticChecksDefault
         scheduledCheckInterval = scheduledCheckIntervalDefault
         appIcon = .default
